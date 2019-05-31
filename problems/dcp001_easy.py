@@ -1,4 +1,4 @@
-#!/usr/bin/python3
+#!/usr/local/bin/python3
 
 """
 2019.05.19 Daily Coding Problem: Problem #1 [Easy]
@@ -13,11 +13,11 @@ Bonus: Can you do this in one pass?
 """
 
 def canSumTo(k, X):
-	lookup = {}
-	for x in X:
-		if x in lookup: return True
-		lookup[ k - x ] = x
-	return False
+    waitingFor = set()
+    for x in X:
+        if x in waitingFor: return True
+        waitingFor.add(k - x)
+    return False
 
 
 assert (True == canSumTo(17, [10,15,3,7]))
