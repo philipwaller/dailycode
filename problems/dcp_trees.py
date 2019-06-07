@@ -24,14 +24,37 @@ def count(node):
     return count(node.left) + count(node.right) + 1 if node else 0
 
 def deepest(node):
-    # @todo
+    if not node.left and not node.right:
+        return (node, 1)
+
+    if not node.left:
+        return increment_depth(deepest(node.right))
+
+    if not node.right:
+        return increment_depth(deepest(node.left))
+
+    return increment_depth(
+            max(deepest(node.left), deepest(node.right), key=lambda x: x[1]))
+
+def increment_depth(node_depth):
+    node, depth = node_depth
+    return (node, depth + 1)
 
 
-node = Node(0, \
-        Node(1, Node(1), Node(2, Node(1), Node(2))), \
-        Node(2, Node(1, Node(1, Node(1)), Node(2, None, Node(2))), Node(2)) \
+node = Node('root', 
+        Node('left', \
+            Node('left.left'), \
+            Node('left.right', Node('left.right.left'), Node('left.right.right'))), \
+        Node('right', \
+            Node('right.left', \
+                Node('right.left.left', Node('right.left.left.left')), \
+                Node('right.right', None, Node('right.right.right'))), \
+            Node('right.right')) \
         ) 
-print("{}".format(node.serialize()))
 
+print("{}".format(node.serialize()))
 print("{} == {}".format(node.count(), count(node)))
+
+deepest_node = deepest(node)
+print("{} : {}".format(deepest_node[0].serialize(), deepest_node[1]))
 
